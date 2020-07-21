@@ -89,3 +89,15 @@ p193
 
         run post/windows/manage/migrate
      系统会自动寻早合适的进程然后迁移
+## 五、其他操作
+1. 退出meterpreter 退出到MSF框架
+
+           输入：background
+2. 查看我们获得的shell
+
+           ssessions  -l
+3. 切换到id为1的shell
+   
+          sessions -i 1
+          切换到id为1的shell
+
